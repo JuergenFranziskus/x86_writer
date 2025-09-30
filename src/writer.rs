@@ -148,7 +148,12 @@ impl<O: Write> FasmWriter<O> {
     }
 
     pub fn call(&mut self, to: impl Into<Operand>) -> io::Result<()> {
-        self.emit_unary_instruction("call", to)
+        let to = to.into();
+        write!(self.out, "    call ")?;
+        self.print_operand(to)?;
+        writeln!(self.out)?;
+
+        Ok(())
     }
     pub fn mov(&mut self, to: impl Into<Operand>, from: impl Into<Operand>) -> io::Result<()> {
         self.emit_binary_instruction("mov", to, from)
@@ -161,6 +166,14 @@ impl<O: Write> FasmWriter<O> {
     }
     pub fn ret(&mut self) -> io::Result<()> {
         writeln!(self.out, "    ret")
+    }
+    pub fn syscall(&mut self) -> io::Result<()> {
+        writeln!(self.out, "    syscall")
+    }
+    pub fn xor(&mut self, to: impl Into<Operand>, from: impl Into<Operand>) -> io::Result<()> {
+        self.emit_binary_instruction("xor", to, from)?;
+
+        Ok(())
     }
 }
 

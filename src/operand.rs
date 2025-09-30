@@ -87,6 +87,11 @@ impl From<i64> for Operand {
         Self::Immediate(value as i128)
     }
 }
+impl From<i128> for Operand {
+    fn from(value: i128) -> Self {
+        Self::Immediate(value as i128)
+    }
+}
 
 #[derive(Copy, Clone, Debug)]
 pub struct Memory {
