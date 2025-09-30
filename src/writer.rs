@@ -147,12 +147,20 @@ impl<O: Write> FasmWriter<O> {
         Ok(())
     }
 
+    pub fn add(&mut self, to: impl Into<Operand>, from: impl Into<Operand>) -> io::Result<()> {
+        self.emit_binary_instruction("add", to, from)?;
+        Ok(())
+    }
     pub fn call(&mut self, to: impl Into<Operand>) -> io::Result<()> {
         let to = to.into();
         write!(self.out, "    call ")?;
         self.print_operand(to)?;
         writeln!(self.out)?;
 
+        Ok(())
+    }
+    pub fn lea(&mut self, to: impl Into<Operand>, from: impl Into<Operand>) -> io::Result<()> {
+        self.emit_binary_instruction("lea", to, from)?;
         Ok(())
     }
     pub fn mov(&mut self, to: impl Into<Operand>, from: impl Into<Operand>) -> io::Result<()> {
